@@ -20,6 +20,20 @@ target_link_libraries(ctext
         minitensor
 )
 
+export(TARGETS ctext
+    FILE ctext-targets.cmake
+)
+
+install(TARGETS ctext
+      EXPORT ctext
+      DESTINATION lib
+) # ignored
+
+install(EXPORT ctext FILE ctext-config.cmake
+    DESTINATION share/ctext
+)
+install(DIRECTORY include/ctext DESTINATION include)
+
 
 if(BUILD_TESTS)
     add_subdirectory(tests)
