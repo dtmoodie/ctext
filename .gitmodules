@@ -1,0 +1,3 @@
+[submodule "dependencies/minitensor"]
+	path = dependencies/minitensor
+	url = ../minitensor
