@@ -3,8 +3,14 @@ cmake_minimum_required(VERSION 3.5)
 project(ctext)
 option(BUILD_TESTS "Build tests" ON)
 
-find_package(ct REQUIRED)
-find_package(minitensor REQUIRED)
+if(NOT TARGET ct)
+    find_package(ct QUIET)
+endif()
+
+find_package(minitensor QUIET)
+if(NOT TARGET minitensor)
+    add_subdirectory(dependencies/minitensor)
+endif()
 
 
 add_library(ctext INTERFACE)
