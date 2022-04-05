@@ -182,7 +182,7 @@ template <class T_> struct DataTableStorage {
     uint32_t new_index = m_shape[0];
     m_shape.setShape(0, new_index + 1);
     mt::Tensor<T, storage_dim> storage_view = this->data();
-    input_view.copyTo(storage_view[new_index]);
+    storage_view[new_index] = input_view;
     // storage_view[new_size - 1].assign(input_view);
     // m_data.push_back(val);
   }
@@ -199,7 +199,7 @@ template <class T_> struct DataTableStorage {
     }
     this->resizeSubarray(new_shape);
     mt::Tensor<T, storage_dim> storage_view = this->data();
-    input_view.copyTo(storage_view[new_index]);
+    storage_view[new_index] = input_view;
   }
 
   void resizeSubarray(mt::Shape<data_dim> subshape) {
@@ -242,13 +242,15 @@ template <class T_> struct DataTableStorage {
   void insert(uint32_t idx, const T_ &val) {
     m_data.insert(m_data.begin() + idx, val);
   }
-  void assign(uint32_t idx, const T_ &val) {
+
+  template<class U>
+  void assign(uint32_t idx, const U &val) {
     auto input_view = mt::tensorWrap(val);
     if (m_data.empty()) {
       resizeSubarray(input_view.getShape());
     }
     mt::Tensor<T, storage_dim> storage_view = this->data();
-    input_view.copyTo(storage_view[idx]);
+    storage_view[idx] = input_view;
   }
 
   /*void assign(uint32_t idx, T_ val)

@@ -1,9 +1,14 @@
 #ifndef CT_EXT_DATA_TABLE_BASE_HPP
 #define CT_EXT_DATA_TABLE_BASE_HPP
 #include "IDataTable.hpp"
-#include <array>
+#include "SelectComponents.hpp"
+
 #include <ct/reflect.hpp>
 #include <ct/type_traits.hpp>
+
+#include <array>
+
+
 
 namespace ct
 {
@@ -11,25 +16,9 @@ namespace ct
     {
         template <class DTYPE, template <class...> class STORAGE_POLICY, class T>
         struct DataTableBase;
-        struct Component
-        {
-        };
 
-        template <class T>
-        struct SelectComponents;
 
-        template <class T>
-        struct SelectComponents<VariadicTypedef<T>>
-        {
-            using type = typename AppendIf<IsBase<Base<Component>, Derived<T>>::value, T, ct::VariadicTypedef<>>::type;
-        };
 
-        template <class T, class... U>
-        struct SelectComponents<VariadicTypedef<T, U...>>
-        {
-            using super = SelectComponents<VariadicTypedef<U...>>;
-            using type = typename AppendIf<IsBase<Base<Component>, Derived<T>>::value, T, typename super::type>::type;
-        };
 
         template <class U, template <class...> class STORAGE_POLICY, class... Args>
         struct DataTableBase<U, STORAGE_POLICY, VariadicTypedef<Args...>>
